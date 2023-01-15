@@ -1,0 +1,20 @@
+query GetAssignedIssues($userID: String!) {
+  user(id: $userID) {
+    assignedIssues(
+      filter: { state: { type: { nin: ["backlog", "completed"] } } }
+    ) {
+      nodes {
+        id
+        identifier
+        title
+        description
+        number
+        url
+        state {
+          name
+          position
+        }
+      }
+    }
+  }
+}
