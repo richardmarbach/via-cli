@@ -39,10 +39,10 @@ pub enum Commands {
 
 #[derive(Args, Debug)]
 pub struct Config {
-    #[arg(short, long, value_enum, default_value_t = OutputFormat::TEXT)]
+    #[arg(short, long, value_enum, global = true, default_value_t = OutputFormat::TEXT)]
     pub format: OutputFormat,
 
-    #[arg(short, long, value_enum, alias = "env", env = "VIA_ENVIRONMENT", default_value_t = Environment::Production)]
+    #[arg(short, long, value_enum, global = true, alias = "env", env = "VIA_ENVIRONMENT", default_value_t = Environment::Production)]
     pub environment: Environment,
 
     #[arg(long, env = "VIA_LINEAR_API_KEY")]
