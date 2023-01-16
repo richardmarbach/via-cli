@@ -34,11 +34,11 @@ impl AssignedCommand {
         let client = LinearClient::new(&config.linear_api_key);
         let user_id = client.current_user_id()?;
 
-        let mut issues = client.assigned_issues(&user_id)?.peekable();
+        let issues = client.assigned_issues(&user_id)?;
 
         match config.format {
             cli::OutputFormat::TEXT => {
-                if let None = issues.peek() {
+                if issues.is_empty() {
                     println!("You don't have any assigned issues!");
                     return Ok(());
                 }
@@ -59,7 +59,6 @@ impl AssignedCommand {
                 Ok(())
             }
             cli::OutputFormat::JSON => {
-                let issues: Vec<_> = issues.collect();
                 let json = serde_json::to_string(&issues)?;
                 println!("{json}");
                 Ok(())

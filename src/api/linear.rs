@@ -1,5 +1,3 @@
-use std::vec;
-
 use color_eyre::{eyre::ContextCompat, Result};
 use graphql_client::{reqwest::post_graphql_blocking as post_graphql, GraphQLQuery};
 use reqwest::{blocking::Client, header};
@@ -43,7 +41,7 @@ impl<'a> LinearClient<'a> {
     pub fn assigned_issues(
         &self,
         user_id: &str,
-    ) -> Result<vec::IntoIter<GetAssignedIssuesUserAssignedIssuesNodes>> {
+    ) -> Result<Vec<GetAssignedIssuesUserAssignedIssuesNodes>> {
         let variables = get_assigned_issues::Variables {
             user_id: user_id.to_owned(),
         };
@@ -52,7 +50,7 @@ impl<'a> LinearClient<'a> {
         let response_data: get_assigned_issues::ResponseData =
             response_body.data.context("missing data")?;
 
-        Ok(response_data.user.assigned_issues.nodes.into_iter())
+        Ok(response_data.user.assigned_issues.nodes)
     }
 }
 
