@@ -1,4 +1,4 @@
-use clap::Args;
+use clap::{Args, Subcommand};
 use color_eyre::Result;
 
 use crate::{
@@ -7,9 +7,29 @@ use crate::{
 };
 
 #[derive(Args, Debug)]
-pub struct IssuesCommand {}
+pub struct IssuesCommand {
+    #[command(subcommand)]
+    command: Commands,
+}
 
 impl IssuesCommand {
+    pub fn run(&self, config: &Config) -> Result<()> {
+        match &self.command {
+            Commands::Assigned(command) => command.run(&config)
+        }
+    }
+}
+
+#[derive(Subcommand, Debug)]
+enum Commands {
+    #[command(about = "List assigned issues")]
+    Assigned(AssignedCommand),
+}
+
+#[derive(Args, Debug)]
+pub struct AssignedCommand { }
+
+impl AssignedCommand {
     pub fn run(&self, config: &Config) -> Result<()> {
         let client = LinearClient::new(&config.linear_api_key);
         let user_id = client.current_user_id()?;
