@@ -18,7 +18,7 @@ impl<'a> LinearClient<'a> {
                 .default_headers(
                     std::iter::once((
                         header::AUTHORIZATION,
-                        header::HeaderValue::from_str(&format!("Bearer {}", api_key)).unwrap(),
+                        header::HeaderValue::from_str(&format!("{}", api_key)).unwrap(),
                     ))
                     .collect(),
                 )
